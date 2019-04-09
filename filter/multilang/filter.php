@@ -54,7 +54,7 @@ class filter_multilang extends moodle_text_filter {
 
         if (empty($CFG->filter_multilang_force_old) and !empty($CFG->filter_multilang_converted)) {
             // new syntax
-            $search = '/(<span(\s+lang="[a-zA-Z0-9_-]+"|\s+class="multilang"){2}\s*>.*?<\/span>)(\s*<span(\s+lang="[a-zA-Z0-9_-]+"|\s+class="multilang"){2}\s*>.*?<\/span>)+/is';
+            $search = '/(<(?:div|span|p)(\s+(?:[^>]*\s+)?lang="[a-zA-Z0-9_-]+"|\s+(?:[^>]*\s+)?class="(?:[^"]+\s+)?multilang(?:\s+[^"]+)?"){2}[^>]*>.*?<\/(?:div|span|p)>)(\s*<(?:div|span|p)(\s+(?:[^>]*\s+)?lang="[a-zA-Z0-9_-]+"|\s+(?:[^>]*\s+)?class="(?:[^"]+\s+)?multilang(?:\s+[^"]+)?"){2}[^>]*>.*?<\/(?:div|span|p)>)+/is';
         } else {
             // old syntax
             $search = '/(<(?:lang|span) lang="[a-zA-Z0-9_-]*".*?>.*?<\/(?:lang|span)>)(\s*<(?:lang|span) lang="[a-zA-Z0-9_-]*".*?>.*?<\/(?:lang|span)>)+/is';
@@ -85,7 +85,7 @@ function filter_multilang_impl($langblock) {
         $parentlang = $parentcache[$mylang];
     }
 
-    $searchtosplit = '/<(?:lang|span)[^>]+lang="([a-zA-Z0-9_-]+)"[^>]*>(.*?)<\/(?:lang|span)>/is';
+    $searchtosplit = '/<(?:lang|span|div|p)[^>]+lang="([a-zA-Z0-9_-]+)"[^>]*>(.*?)<\/(?:lang|span|div|p)>/is';
 
     if (!preg_match_all($searchtosplit, $langblock[0], $rawlanglist)) {
         //skip malformed blocks
